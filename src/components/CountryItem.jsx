@@ -1,6 +1,7 @@
 import styles from "./CountryItem.module.css";
+import PropTypes from "prop-types";
 
-function CountryItem({ country }) {
+function CountryItem({ country={emoji:"😒",country:"bangladesh"} }) {
   return (
     <li className={styles.countryItem}>
       <span>{country.emoji}</span>
@@ -10,3 +11,12 @@ function CountryItem({ country }) {
 }
 
 export default CountryItem;
+
+// Prop validatin
+
+CountryItem.propTypes = {
+  country: PropTypes.shape({
+    emoji: PropTypes.string.isRequired,
+    country: PropTypes.string.isRequired,
+  }),
+};

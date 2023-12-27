@@ -9,6 +9,8 @@ function Citiesprovider({ children }) {
   const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [currentCity, setCurrentCity] = useState({});
+
   useEffect(function () {
     async function fetchCities() {
       try {
@@ -26,11 +28,26 @@ function Citiesprovider({ children }) {
     fetchCities();
   }, []);
 
+  async function getCity(id) {
+      try {
+        setIsLoading(true);
+        const res = await fetch(`${API_URL}/cities/${id}`);
+        const data = await res.json();
+        setCurrentCity(data);
+      } catch {
+        console.log("error");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
   return (
     <CItiesContext.Provider
       value={{
         cities,
         isLoading,
+        currentCity,
+        getCity,
       }}
     >
       {children}
@@ -40,7 +57,7 @@ function Citiesprovider({ children }) {
 
 function useCitiesContext() {
   const city = useContext(CItiesContext);
-  if (!city){
+  if (!city) {
     throw new Error("useCities must be used within a CitiesProvider");
   }
   return city;
@@ -48,9 +65,7 @@ function useCitiesContext() {
 
 export { Citiesprovider, useCitiesContext };
 
-
 // props validation of children
 Citiesprovider.propTypes = {
   children: propTypes.node.isRequired,
 };
-

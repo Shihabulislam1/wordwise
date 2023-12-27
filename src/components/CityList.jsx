@@ -1,10 +1,13 @@
 import CityItem from "./CityItem";
 import styles from "./CityList.module.css";
 import Spinner from "./Spinner";
-import PropTypes from "prop-types";
-import Message from "./Message";
 
-function CityList({ cities, isLoading }) {
+import Message from "./Message";
+import { useCitiesContext } from "../contexts/cities";
+
+function CityList() {
+
+  const { cities, isLoading }=useCitiesContext();
   
   if (isLoading) {
     return <Spinner />;
@@ -25,20 +28,3 @@ function CityList({ cities, isLoading }) {
 
 export default CityList;
 
-CityList.propTypes = {
-  cities: PropTypes.arrayOf(
-    PropTypes.shape({
-      cityName: PropTypes.string.isRequired,
-      country: PropTypes.string.isRequired,
-      emoji: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired,
-      notes: PropTypes.string.isRequired,
-      position: PropTypes.shape({
-        lat: PropTypes.number.isRequired,
-        lng: PropTypes.number.isRequired,
-      }),
-      id: PropTypes.number.isRequired,
-    })
-  ),
-  isLoading: PropTypes.bool.isRequired,
-};
